@@ -1,8 +1,10 @@
 package com.hostfully.bookingservice.service;
 
 import com.hostfully.bookingservice.exception.ServiceException;
+import com.hostfully.bookingservice.model.Owner;
 import com.hostfully.bookingservice.model.Property;
 import com.hostfully.bookingservice.repository.PropertyRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,15 +17,35 @@ public class PropertyService {
 
     private final PropertyRepository propertyRepository;
 
-    public PropertyService(PropertyRepository propertyRepository) {
+    private final OwnerService ownerService;
+
+    public PropertyService(PropertyRepository propertyRepository, OwnerService ownerService) {
         this.propertyRepository = propertyRepository;
+        this.ownerService = ownerService;
     }
 
     public Property create(Property property) {
-        if (propertyRepository.findByName(property.getName()) != null) {
-            throw new ServiceException("There is already a property with that name");
+        try {
+            if (propertyRepository.findByName(property.getName()) != null) {
+                throw new ServiceException("There is already a property with that name", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+
+            checkOwner(property.getOwner().getId());
+
+            property.setCreatedAt(LocalDateTime.now());
+            property.setStatus(Property.BookingStatus.AVAILABLE);
+            property.setDeleted(false);
+            return propertyRepository.save(property);
+        } catch (Exception e) {
+            throw new ServiceException("Failed to create property: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return propertyRepository.save(property);
+    }
+
+    private void checkOwner(UUID id){
+        Owner owner = ownerService.getById(id);
+        if(owner.isDeleted()){
+            throw new ServiceException("Owner is deleted", HttpStatus.NOT_FOUND);
+        }
     }
 
     public Property update(UUID id, Property updatedProperty) {
@@ -40,13 +62,13 @@ public class PropertyService {
 
             return propertyRepository.save(property);
         } else {
-            throw new ServiceException("Property not found");
+            throw new ServiceException("Property not found", HttpStatus.NOT_FOUND);
         }
     }
 
     public Property getById(UUID id) {
-        Optional<Property> property = propertyRepository.findById(id);
-        return property.orElse(null);
+        return propertyRepository.findById(id)
+                .orElseThrow(() -> new ServiceException("Property not found", HttpStatus.NOT_FOUND));
     }
 
     public List<Property> fetchAll() {
@@ -60,7 +82,7 @@ public class PropertyService {
             deletedProperty.setDeleted(true);
             propertyRepository.save(deletedProperty);
         } else {
-            throw new ServiceException("Property not found");
+            throw new ServiceException("Property not found", HttpStatus.NOT_FOUND);
         }
     }
 }

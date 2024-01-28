@@ -10,10 +10,6 @@ public class ServiceException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
-    public ServiceException(String message) {
-        this(message, HttpStatus.BAD_REQUEST);
-    }
-
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
