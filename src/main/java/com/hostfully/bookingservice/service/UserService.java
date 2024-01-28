@@ -1,7 +1,6 @@
 package com.hostfully.bookingservice.service;
 
 import com.hostfully.bookingservice.exception.ServiceException;
-import com.hostfully.bookingservice.model.Guest;
 import com.hostfully.bookingservice.model.User;
 import com.hostfully.bookingservice.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -45,8 +44,15 @@ public class UserService {
     }
 
     public User getById(UUID id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("User not found", HttpStatus.NOT_FOUND));
+        Optional<User> userOptional = userRepository.findById(id);
+
+        User user = userOptional.orElseThrow(() -> new ServiceException("User not found", HttpStatus.NOT_FOUND));
+
+        if (user.isDeleted()) {
+            throw new ServiceException("User is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return user;
     }
 
     public List<User> fetchAll() {

@@ -27,6 +27,7 @@ public class BookingService {
         checkBookingAvailability(booking);
         booking.setBookingType(bookingType);
         booking.setStatus(Booking.BookingStatus.BOOKED);
+        booking.setDeleted(false);
         return bookingRepository.save(booking);
     }
 
@@ -79,6 +80,7 @@ public class BookingService {
 
             booking.setStartDate(rebook.getStartDate());
             booking.setEndDate(rebook.getEndDate());
+            booking.setStatus(Booking.BookingStatus.BOOKED);
             checkBookingAvailability(booking);
             //TODO SALVAR NO HISTORICO
             return bookingRepository.save(booking);
@@ -114,9 +116,17 @@ public class BookingService {
 
 
     public Booking getById(UUID id) {
-        return bookingRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("Booking not found", HttpStatus.NOT_FOUND));
+        Optional<Booking> bookingOptional = bookingRepository.findById(id);
+
+        Booking booking = bookingOptional.orElseThrow(() -> new ServiceException("Booking not found", HttpStatus.NOT_FOUND));
+
+        if (booking.isDeleted()) {
+            throw new ServiceException("Booking is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return booking;
     }
+
 
     public List<Booking> fetchAll(Booking.BookingType bookingType) {
         return bookingRepository.findAllNotDeletedByBookingType(bookingType);

@@ -48,7 +48,7 @@ public class BookingController {
         bookingService.cancelBooking(id);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/rebook/{id}")
     public Booking rebook(@PathVariable UUID id, @RequestBody Booking booking) {
         return bookingService.rebook(id, booking);
     }

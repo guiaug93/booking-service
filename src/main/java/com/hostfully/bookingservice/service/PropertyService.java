@@ -67,8 +67,15 @@ public class PropertyService {
     }
 
     public Property getById(UUID id) {
-        return propertyRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("Property not found", HttpStatus.NOT_FOUND));
+        Optional<Property> propertyOptional = propertyRepository.findById(id);
+
+        Property property = propertyOptional.orElseThrow(() -> new ServiceException("Property not found", HttpStatus.NOT_FOUND));
+
+        if (property.isDeleted()) {
+            throw new ServiceException("Property is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return property;
     }
 
     public List<Property> fetchAll() {

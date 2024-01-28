@@ -44,8 +44,15 @@ public class OwnerService {
     }
 
     public Owner getById(UUID id) {
-        return ownerRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("Owner not found", HttpStatus.NOT_FOUND));
+        Optional<Owner> ownerOptional = ownerRepository.findById(id);
+
+        Owner owner = ownerOptional.orElseThrow(() -> new ServiceException("Owner not found", HttpStatus.NOT_FOUND));
+
+        if (owner.isDeleted()) {
+            throw new ServiceException("Owner is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return owner;
     }
 
     public List<Owner> fetchAll() {

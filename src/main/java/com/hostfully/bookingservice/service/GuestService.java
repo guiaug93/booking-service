@@ -44,8 +44,15 @@ public class GuestService {
     }
 
     public Guest getById(UUID id) {
-        return guestRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("Guest not found", HttpStatus.NOT_FOUND));
+        Optional<Guest> guestOptional = guestRepository.findById(id);
+
+        Guest guest = guestOptional.orElseThrow(() -> new ServiceException("Guest not found", HttpStatus.NOT_FOUND));
+
+        if (guest.isDeleted()) {
+            throw new ServiceException("Guest is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return guest;
     }
 
     public List<Guest> fetchAll() {

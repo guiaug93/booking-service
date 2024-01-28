@@ -1,5 +1,6 @@
 package com.hostfully.bookingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnoreProperties("properties")
     private Owner owner;
 
     private String name;
@@ -37,6 +39,10 @@ public class Property {
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted;
+
+    public Property(){
+
+    }
 
     public Property(UUID id, Owner owner, String name, String description, BookingStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal dailyValue, BigDecimal cleaningValue, Boolean deleted) {
         this.id = id;
