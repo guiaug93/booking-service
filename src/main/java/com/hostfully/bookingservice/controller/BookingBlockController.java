@@ -9,17 +9,17 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/booking-block")
-public class BlockController {
+public class BookingBlockController {
 
     private final BookingService bookingService;
 
-    public BlockController(BookingService bookingService) {
+    public BookingBlockController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
     @PostMapping
     public Booking createBlock(@RequestBody Booking block) {
-        return bookingService.create(block, true);
+        return bookingService.create(block, Booking.BookingType.MAINTENANCE);
     }
 
 

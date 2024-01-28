@@ -13,6 +13,15 @@ public class Owner extends Person{
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Property> properties;
 
+    public Owner() {
+
+    }
+
+    public Owner(UUID id, String name, String document, String telephone, String address, String mail, Boolean deleted, List<Property> properties) {
+        super(id, name, document, telephone, address, mail, deleted);
+        this.properties = properties;
+    }
+
     public List<Property> getProperties() {
         return properties;
     }

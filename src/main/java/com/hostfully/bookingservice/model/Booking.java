@@ -27,7 +27,7 @@ public class Booking {
     private Guest guest;
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     public Booking(UUID id, BookingStatus status, Property property, LocalDateTime startDate, LocalDateTime endDate, BookingType bookingType, Guest guest, Boolean deleted) {
         this.id = id;
@@ -80,7 +80,7 @@ public class Booking {
         this.id = id;
     }
 
-    public Boolean getDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 

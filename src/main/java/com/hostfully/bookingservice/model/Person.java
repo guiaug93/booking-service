@@ -26,7 +26,21 @@ public class Person {
     private String mail;
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
-    private Boolean deleted;
+    private Boolean deleted = false;
+
+    public Person() { }
+
+
+    public Person(UUID id, String name, String document, String telephone, String address, String mail, Boolean deleted) {
+        this.id = id;
+        this.name = name;
+        this.document = document;
+        this.telephone = telephone;
+        this.address = address;
+        this.mail = mail;
+        this.deleted = deleted;
+    }
+
 
     public UUID getId() {
         return id;
@@ -76,7 +90,7 @@ public class Person {
         this.mail = mail;
     }
 
-    public Boolean getDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 

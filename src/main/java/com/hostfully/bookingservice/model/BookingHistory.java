@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "\"booking\"")
+@Table(name = "\"booking_history\"")
 public class BookingHistory {
 
     @Id

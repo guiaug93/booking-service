@@ -19,13 +19,13 @@ public class BookingController {
 
     @PostMapping
     public Booking createBooking(@RequestBody Booking booking) {
-        return bookingService.create(booking);
+        return bookingService.create(booking, Booking.BookingType.GUEST_BOOKING);
     }
 
 
     @GetMapping
     public List<Booking> getAllBookings() {
-        return bookingService.fetchAll();
+        return bookingService.fetchAll(Booking.BookingType.GUEST_BOOKING);
     }
 
     @GetMapping("/{id}")
