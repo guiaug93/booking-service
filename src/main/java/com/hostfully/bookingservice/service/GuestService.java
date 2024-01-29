@@ -3,6 +3,7 @@ package com.hostfully.bookingservice.service;
 import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Guest;
 import com.hostfully.bookingservice.repository.GuestRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public class GuestService {
 
     public Guest create(Guest guest) {
         if (guestRepository.findByDocument(guest.getDocument()) != null) {
-            throw new ServiceException("There is already a guest with that document");
+            throw new ServiceException("There is already a guest with that document", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        guest.setDeleted(false);
         return guestRepository.save(guest);
     }
 
@@ -38,13 +40,20 @@ public class GuestService {
 
             return guestRepository.save(guest);
         } else {
-            throw new ServiceException("Guest not found");
+            throw new ServiceException("Guest not found", HttpStatus.NOT_FOUND);
         }
     }
 
     public Guest getById(UUID id) {
-        Optional<Guest> guest = guestRepository.findById(id);
-        return guest.orElse(null);
+        Optional<Guest> guestOptional = guestRepository.findById(id);
+
+        Guest guest = guestOptional.orElseThrow(() -> new ServiceException("Guest not found", HttpStatus.NOT_FOUND));
+
+        if (guest.isDeleted()) {
+            throw new ServiceException("Guest is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return guest;
     }
 
     public List<Guest> fetchAll() {
@@ -58,7 +67,7 @@ public class GuestService {
             deletedGuest.setDeleted(true);
             guestRepository.save(deletedGuest);
         } else {
-            throw new ServiceException("Guest not found");
+            throw new ServiceException("Guest not found", HttpStatus.NOT_FOUND);
         }
     }
 }

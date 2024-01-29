@@ -3,6 +3,7 @@ package com.hostfully.bookingservice.service;
 import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Owner;
 import com.hostfully.bookingservice.repository.OwnerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public class OwnerService {
 
     public Owner create(Owner owner) {
         if (ownerRepository.findByDocument(owner.getDocument()) != null) {
-            throw new ServiceException("There is already a owner with that document");
+            throw new ServiceException("There is already a owner with that document", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        owner.setDeleted(false);
         return ownerRepository.save(owner);
     }
 
@@ -38,13 +40,20 @@ public class OwnerService {
 
             return ownerRepository.save(owner);
         } else {
-            throw new ServiceException("Owner not found");
+            throw new ServiceException("Owner not found", HttpStatus.NOT_FOUND);
         }
     }
 
     public Owner getById(UUID id) {
-        Optional<Owner> owner = ownerRepository.findById(id);
-        return owner.orElse(null);
+        Optional<Owner> ownerOptional = ownerRepository.findById(id);
+
+        Owner owner = ownerOptional.orElseThrow(() -> new ServiceException("Owner not found", HttpStatus.NOT_FOUND));
+
+        if (owner.isDeleted()) {
+            throw new ServiceException("Owner is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return owner;
     }
 
     public List<Owner> fetchAll() {
@@ -58,7 +67,7 @@ public class OwnerService {
             deletedOwner.setDeleted(true);
             ownerRepository.save(deletedOwner);
         } else {
-            throw new ServiceException("Owner not found");
+            throw new ServiceException("Owner not found", HttpStatus.NOT_FOUND);
         }
     }
 }

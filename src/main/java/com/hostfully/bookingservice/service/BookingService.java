@@ -2,7 +2,10 @@ package com.hostfully.bookingservice.service;
 
 import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Booking;
+import com.hostfully.bookingservice.model.Guest;
+import com.hostfully.bookingservice.model.Property;
 import com.hostfully.bookingservice.repository.BookingRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,29 +16,61 @@ import java.util.UUID;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final GuestService guestService;
+    private final PropertyService propertyService;
 
-    public BookingService(BookingRepository bookingRepository) {
+    public BookingService(BookingRepository bookingRepository, GuestService guestService, PropertyService propertyService) {
         this.bookingRepository = bookingRepository;
+        this.guestService = guestService;
+        this.propertyService = propertyService;
     }
 
-    public Booking create(Booking booking) {
-        //TODO verificar se o mesmo guest ja nao reservou a mesma propriedade
-        /*if (bookingRepository.findByDocument(booking.getDocument()) != null) {
-            throw new ServiceException("There is already a booking with that document");
-        }*/
-        //verificar se data esta disponivel
-        //verificar se nao ha bloqueios
+    public Booking create(Booking booking, Booking.BookingType bookingType) {
+        if(bookingType == Booking.BookingType.GUEST_BOOKING){
+            checkGuest(booking.getGuest().getId());
+        }
+
+        checkProperty(booking.getProperty().getId());
+        checkBookingAvailability(booking);
+        booking.setBookingType(bookingType);
+        booking.setStatus(Booking.BookingStatus.BOOKED);
+        booking.setDeleted(false);
         return bookingRepository.save(booking);
     }
 
-    private boolean isDateAvailable(Booking newBooking, List<Booking> bookingHistory) {
-        for (Booking existingBooking : bookingHistory) {
-            if (newBooking.getStartDate().isBefore(existingBooking.getEndDate()) &&
-                    newBooking.getEndDate().isAfter(existingBooking.getStartDate())) {
-                return false;
-            }
+    private void checkGuest(UUID id){
+        Guest guest = guestService.getById(id);
+        if(guest.isDeleted()){
+            throw new ServiceException("Guest is deleted", HttpStatus.NOT_FOUND);
         }
-        return true;
+    }
+
+    private void checkProperty(UUID id){
+        Property property = propertyService.getById(id);
+        if(property.isDeleted()){
+            throw new ServiceException("Property is deleted", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private void checkBookingAvailability(Booking newBooking) {
+        List<Booking> bookingHistory = bookingRepository.findBookingsForPropertyAtDate(newBooking.getProperty().getId(), newBooking.getStartDate(), newBooking.getEndDate());
+        for (Booking existingBooking : bookingHistory) {
+            checkBlocks(existingBooking);
+            checkDateAvailability(newBooking, existingBooking);
+        }
+    }
+
+    private void checkBlocks(Booking booking){
+        if(booking.getBookingType() == Booking.BookingType.MAINTENANCE){
+            throw new ServiceException("Booking is blocked due to maintenance", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    private void checkDateAvailability(Booking newBooking, Booking booking){
+        if (newBooking.getStartDate().isBefore(booking.getEndDate()) &&
+                newBooking.getEndDate().isAfter(booking.getStartDate())) {
+            throw new ServiceException("Range of dates not available for booking", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     public Booking update(UUID id, Booking updatedBooking) {
@@ -45,14 +80,15 @@ public class BookingService {
             Booking booking = existingBooking.get();
             booking.setStartDate(updatedBooking.getStartDate());
             booking.setEndDate(updatedBooking.getEndDate());
-            booking.setGuest(updatedBooking.getGuest());
+            if(booking.getBookingType() == Booking.BookingType.GUEST_BOOKING){
+                booking.setGuest(updatedBooking.getGuest());
+            }
 
-            //verificar se data esta disponivel
-            //verificar se nao ha bloqueios
+            checkBookingAvailability(booking);
 
             return bookingRepository.save(booking);
         } else {
-            throw new ServiceException("Booking not found");
+            throw new ServiceException("Booking not found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -61,37 +97,60 @@ public class BookingService {
 
         if (existingBooking.isPresent()) {
             Booking booking = existingBooking.get();
-            if(booking.getDeleted()){
-                throw new ServiceException("Booking is deleted");
-            }
-            if(booking.getStatus()!= Booking.BookingStatus.CANCELED){
-                throw new ServiceException("Booking is not canceled");
-            }
+            validateBookingUpdate(booking);
 
-            //TODO verificar se a data esta disponivel
             booking.setStartDate(rebook.getStartDate());
             booking.setEndDate(rebook.getEndDate());
+            booking.setStatus(Booking.BookingStatus.BOOKED);
+            checkBookingAvailability(booking);
             //TODO SALVAR NO HISTORICO
             return bookingRepository.save(booking);
         } else {
-            throw new ServiceException("Booking not found");
+            throw new ServiceException("Booking not found", HttpStatus.NOT_FOUND);
         }
     }
 
-    public Booking cancelBooking(UUID id){
+    private void validateBookingUpdate(Booking booking){
+        if(booking.isDeleted()){
+            throw new ServiceException("Booking is deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if(booking.getStatus() != Booking.BookingStatus.CANCELED){
+            throw new ServiceException("Booking is not canceled", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if(booking.getBookingType() != Booking.BookingType.GUEST_BOOKING){
+            throw new ServiceException("Not allowed to rebook a blocked booking, please delete it", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
 
-        //TODO
-        return null;
+    public void cancelBooking(UUID id){
+        Optional<Booking> existingBooking = bookingRepository.findById(id);
+        if (existingBooking.isPresent()) {
+            Booking booking = existingBooking.get();
+            booking.setStatus(Booking.BookingStatus.CANCELED);
+            //TODO SALVAR NO HISTORICO
+
+            bookingRepository.save(booking);
+        } else {
+            throw new ServiceException("Booking not found", HttpStatus.NOT_FOUND);
+        }
     }
 
 
     public Booking getById(UUID id) {
-        Optional<Booking> booking = bookingRepository.findById(id);
-        return booking.orElse(null);
+        Optional<Booking> bookingOptional = bookingRepository.findById(id);
+
+        Booking booking = bookingOptional.orElseThrow(() -> new ServiceException("Booking not found", HttpStatus.NOT_FOUND));
+
+        if (booking.isDeleted()) {
+            throw new ServiceException("Booking is deleted", HttpStatus.NOT_FOUND);
+        }
+
+        return booking;
     }
 
-    public List<Booking> fetchAll() {
-        return bookingRepository.findByDeletedFalse();
+
+    public List<Booking> fetchAll(Booking.BookingType bookingType) {
+        return bookingRepository.findAllNotDeletedByBookingType(bookingType);
     }
 
     public void delete(UUID id) {
@@ -101,7 +160,7 @@ public class BookingService {
             deletedBooking.setDeleted(true);
             bookingRepository.save(deletedBooking);
         } else {
-            throw new ServiceException("Booking not found");
+            throw new ServiceException("Booking not found", HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -21,6 +21,14 @@ public class User {
     @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted;
 
+    public User(UUID id, String password, String mail, String name, Boolean deleted) {
+        this.id = id;
+        this.password = password;
+        this.mail = mail;
+        this.name = name;
+        this.deleted = deleted;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -53,7 +61,7 @@ public class User {
         this.name = name;
     }
 
-    public Boolean getDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 

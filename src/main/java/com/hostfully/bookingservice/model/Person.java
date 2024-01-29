@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
@@ -14,9 +15,9 @@ public class Person {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
-
+    @NotBlank
     private String name;
-
+    @NotBlank
     private String document;
 
     private String telephone;
@@ -27,6 +28,20 @@ public class Person {
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted;
+
+    public Person() { }
+
+
+    public Person(UUID id, String name, String document, String telephone, String address, String mail, Boolean deleted) {
+        this.id = id;
+        this.name = name;
+        this.document = document;
+        this.telephone = telephone;
+        this.address = address;
+        this.mail = mail;
+        this.deleted = deleted;
+    }
+
 
     public UUID getId() {
         return id;
@@ -76,7 +91,7 @@ public class Person {
         this.mail = mail;
     }
 
-    public Boolean getDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 

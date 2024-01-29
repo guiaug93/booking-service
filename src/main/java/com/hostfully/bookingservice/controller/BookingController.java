@@ -1,7 +1,13 @@
 package com.hostfully.bookingservice.controller;
 
+import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Booking;
 import com.hostfully.bookingservice.service.BookingService;
+import com.hostfully.bookingservice.utils.ValidationUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,37 +24,47 @@ public class BookingController {
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody Booking booking) {
-        return bookingService.create(booking);
+    @Operation(description = "Create a booking")
+    public Booking createBooking(@RequestBody @Valid Booking booking, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ServiceException("Validation error: " + ValidationUtils.processFieldErrors(bindingResult), HttpStatus.BAD_REQUEST);
+        }
+        return bookingService.create(booking, Booking.BookingType.GUEST_BOOKING);
     }
 
 
     @GetMapping
+    @Operation(description = "Get all bookings")
     public List<Booking> getAllBookings() {
-        return bookingService.fetchAll();
+        return bookingService.fetchAll(Booking.BookingType.GUEST_BOOKING);
     }
 
     @GetMapping("/{id}")
+    @Operation(description = "Get booking by id")
     public Booking getBookingById(@PathVariable UUID id) {
         return bookingService.getById(id);
     }
 
     @PutMapping("/{id}")
+    @Operation(description = "Update a booking")
     public Booking updateBooking(@PathVariable UUID id, @RequestBody Booking booking) {
         return bookingService.update(id, booking);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(description = "Delete a booking")
     public void deleteBooking(@PathVariable UUID id) {
         bookingService.delete(id);
     }
 
     @DeleteMapping("/cancel/{id}")
+    @Operation(description = "Cancel a booking")
     public void cancelBooking(@PathVariable UUID id) {
         bookingService.cancelBooking(id);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/rebook/{id}")
+    @Operation(description = "Rebook a canceled booking")
     public Booking rebook(@PathVariable UUID id, @RequestBody Booking booking) {
         return bookingService.rebook(id, booking);
     }

@@ -1,6 +1,8 @@
 package com.hostfully.bookingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,15 +18,19 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnoreProperties("properties")
     private Owner owner;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String description;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
@@ -36,6 +42,23 @@ public class Property {
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted;
+
+    public Property(){
+
+    }
+
+    public Property(UUID id, Owner owner, String name, String description, BookingStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal dailyValue, BigDecimal cleaningValue, Boolean deleted) {
+        this.id = id;
+        this.owner = owner;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.dailyValue = dailyValue;
+        this.cleaningValue = cleaningValue;
+        this.deleted = deleted;
+    }
 
     public UUID getId() {
         return id;
@@ -101,7 +124,7 @@ public class Property {
         this.description = description;
     }
 
-    public Boolean getDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 
@@ -109,11 +132,19 @@ public class Property {
         this.deleted = deleted;
     }
 
-    public String getStatus() {
+    public BookingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookingStatus status) {
         this.status = status;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public enum BookingStatus {
+        AVAILABLE, UNAVAILABLE
     }
 }

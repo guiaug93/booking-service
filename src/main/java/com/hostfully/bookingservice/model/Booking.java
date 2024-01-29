@@ -1,6 +1,7 @@
 package com.hostfully.bookingservice.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,7 +18,9 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "property_id")
     private Property property;
+    @NotBlank
     private LocalDateTime startDate;
+    @NotBlank
     private LocalDateTime endDate;
     @Enumerated(EnumType.STRING)
     private BookingType bookingType;
@@ -28,6 +31,10 @@ public class Booking {
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted;
+
+    public Booking(){
+
+    }
 
     public Booking(UUID id, BookingStatus status, Property property, LocalDateTime startDate, LocalDateTime endDate, BookingType bookingType, Guest guest, Boolean deleted) {
         this.id = id;
@@ -80,7 +87,7 @@ public class Booking {
         this.id = id;
     }
 
-    public Boolean getDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 
