@@ -2,6 +2,8 @@ package com.hostfully.bookingservice.service;
 
 import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Booking;
+import com.hostfully.bookingservice.model.Guest;
+import com.hostfully.bookingservice.model.Property;
 import com.hostfully.bookingservice.repository.BookingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,21 +16,40 @@ import java.util.UUID;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final GuestService guestService;
+    private final PropertyService propertyService;
 
-    public BookingService(BookingRepository bookingRepository) {
+    public BookingService(BookingRepository bookingRepository, GuestService guestService, PropertyService propertyService) {
         this.bookingRepository = bookingRepository;
+        this.guestService = guestService;
+        this.propertyService = propertyService;
     }
 
     public Booking create(Booking booking, Booking.BookingType bookingType) {
-        //TODO verificar se o mesmo guest ja nao reservou a mesma propriedade
-        /*if (bookingRepository.findByDocument(booking.getDocument()) != null) {
-            throw new ServiceException("There is already a booking with that document");
-        }*/
+        if(bookingType == Booking.BookingType.GUEST_BOOKING){
+            checkGuest(booking.getGuest().getId());
+        }
+
+        checkProperty(booking.getProperty().getId());
         checkBookingAvailability(booking);
         booking.setBookingType(bookingType);
         booking.setStatus(Booking.BookingStatus.BOOKED);
         booking.setDeleted(false);
         return bookingRepository.save(booking);
+    }
+
+    private void checkGuest(UUID id){
+        Guest guest = guestService.getById(id);
+        if(guest.isDeleted()){
+            throw new ServiceException("Guest is deleted", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private void checkProperty(UUID id){
+        Property property = propertyService.getById(id);
+        if(property.isDeleted()){
+            throw new ServiceException("Property is deleted", HttpStatus.NOT_FOUND);
+        }
     }
 
     private void checkBookingAvailability(Booking newBooking) {
@@ -48,7 +69,7 @@ public class BookingService {
     private void checkDateAvailability(Booking newBooking, Booking booking){
         if (newBooking.getStartDate().isBefore(booking.getEndDate()) &&
                 newBooking.getEndDate().isAfter(booking.getStartDate())) {
-            throw new ServiceException("Range of dates not available to book", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("Range of dates not available for booking", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
