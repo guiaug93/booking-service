@@ -1,8 +1,13 @@
 package com.hostfully.bookingservice.controller;
 
+import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Guest;
 import com.hostfully.bookingservice.service.GuestService;
+import com.hostfully.bookingservice.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +25,10 @@ public class GuestController {
 
     @PostMapping
     @Operation(description = "Create a guest")
-    public Guest createGuest(@RequestBody Guest guest) {
+    public Guest createGuest(@RequestBody @Valid Guest guest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ServiceException("Validation error: " + ValidationUtils.processFieldErrors(bindingResult), HttpStatus.BAD_REQUEST);
+        }
         return guestService.create(guest);
     }
 

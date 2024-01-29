@@ -1,6 +1,7 @@
 package com.hostfully.bookingservice.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,7 +18,9 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "property_id")
     private Property property;
+    @NotBlank
     private LocalDateTime startDate;
+    @NotBlank
     private LocalDateTime endDate;
     @Enumerated(EnumType.STRING)
     private BookingType bookingType;

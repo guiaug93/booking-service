@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
@@ -14,9 +15,9 @@ public class Person {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
-
+    @NotBlank
     private String name;
-
+    @NotBlank
     private String document;
 
     private String telephone;

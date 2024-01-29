@@ -1,8 +1,13 @@
 package com.hostfully.bookingservice.controller;
 
+import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Property;
 import com.hostfully.bookingservice.service.PropertyService;
+import com.hostfully.bookingservice.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +25,10 @@ public class PropertyController {
 
     @PostMapping
     @Operation(description = "Create a property")
-    public Property createProperty(@RequestBody Property property) {
+    public Property createProperty(@RequestBody @Valid Property property, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ServiceException("Validation error: " + ValidationUtils.processFieldErrors(bindingResult), HttpStatus.BAD_REQUEST);
+        }
         return propertyService.create(property);
     }
 

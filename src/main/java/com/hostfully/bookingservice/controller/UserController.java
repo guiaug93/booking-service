@@ -1,9 +1,13 @@
 package com.hostfully.bookingservice.controller;
 
+import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.User;
 import com.hostfully.bookingservice.service.UserService;
+import com.hostfully.bookingservice.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +27,10 @@ public class UserController {
     @Operation(
             description = "Create Users Service"
     )
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ServiceException("Validation error: " + ValidationUtils.processFieldErrors(bindingResult), HttpStatus.BAD_REQUEST);
+        }
         return userService.create(user);
     }
 

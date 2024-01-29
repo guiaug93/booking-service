@@ -1,8 +1,13 @@
 package com.hostfully.bookingservice.controller;
 
+import com.hostfully.bookingservice.exception.ServiceException;
 import com.hostfully.bookingservice.model.Owner;
 import com.hostfully.bookingservice.service.OwnerService;
+import com.hostfully.bookingservice.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +25,12 @@ public class OwnerController {
 
     @PostMapping
     @Operation(description = "Create a owner")
-    public Owner createOwner(@RequestBody Owner owner) {
+    public Owner createOwner(@RequestBody @Valid Owner owner, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ServiceException("Validation error: " + ValidationUtils.processFieldErrors(bindingResult), HttpStatus.BAD_REQUEST);
+        }
         return ownerService.create(owner);
     }
-
 
     @GetMapping
     @Operation(description = "Get all owners")

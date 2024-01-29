@@ -2,6 +2,7 @@ package com.hostfully.bookingservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,8 +21,10 @@ public class Property {
     @JsonIgnoreProperties("properties")
     private Owner owner;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String description;
 
     @Enumerated(EnumType.STRING)
