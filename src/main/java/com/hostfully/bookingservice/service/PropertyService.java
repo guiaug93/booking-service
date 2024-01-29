@@ -86,6 +86,9 @@ public class PropertyService {
         Optional<Property> property = propertyRepository.findById(id);
         if (property.isPresent()) {
             Property deletedProperty = property.get();
+            if(deletedProperty.isDeleted()){
+                throw new ServiceException("Property is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
             deletedProperty.setDeleted(true);
             propertyRepository.save(deletedProperty);
         } else {

@@ -64,6 +64,9 @@ public class GuestService {
         Optional<Guest> guest = guestRepository.findById(id);
         if (guest.isPresent()) {
             Guest deletedGuest = guest.get();
+            if(deletedGuest.isDeleted()){
+                throw new ServiceException("Guest is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
             deletedGuest.setDeleted(true);
             guestRepository.save(deletedGuest);
         } else {

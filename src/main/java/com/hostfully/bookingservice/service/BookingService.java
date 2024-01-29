@@ -157,6 +157,9 @@ public class BookingService {
         Optional<Booking> booking = bookingRepository.findById(id);
         if (booking.isPresent()) {
             Booking deletedBooking = booking.get();
+            if(deletedBooking.isDeleted()){
+                throw new ServiceException("Booking is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
             deletedBooking.setDeleted(true);
             bookingRepository.save(deletedBooking);
         } else {

@@ -64,6 +64,9 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             User deletedGuest = user.get();
+            if(deletedGuest.isDeleted()){
+                throw new ServiceException("User is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
             deletedGuest.setDeleted(true);
             userRepository.save(deletedGuest);
         } else {

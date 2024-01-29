@@ -64,6 +64,9 @@ public class OwnerService {
         Optional<Owner> owner = ownerRepository.findById(id);
         if (owner.isPresent()) {
             Owner deletedOwner = owner.get();
+            if(deletedOwner.isDeleted()){
+                throw new ServiceException("Owner is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
             deletedOwner.setDeleted(true);
             ownerRepository.save(deletedOwner);
         } else {
