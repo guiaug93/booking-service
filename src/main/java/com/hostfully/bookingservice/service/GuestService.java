@@ -23,6 +23,7 @@ public class GuestService {
         if (guestRepository.findByDocument(guest.getDocument()) != null) {
             throw new ServiceException("There is already a guest with that document", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        guest.setDeleted(false);
         return guestRepository.save(guest);
     }
 

@@ -23,6 +23,7 @@ public class OwnerService {
         if (ownerRepository.findByDocument(owner.getDocument()) != null) {
             throw new ServiceException("There is already a owner with that document", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        owner.setDeleted(false);
         return ownerRepository.save(owner);
     }
 

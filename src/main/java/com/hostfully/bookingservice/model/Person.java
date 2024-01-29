@@ -26,7 +26,7 @@ public class Person {
     private String mail;
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
-    private Boolean deleted = false;
+    private Boolean deleted;
 
     public Person() { }
 

@@ -24,7 +24,7 @@ public class UserService {
             throw new ServiceException("Mail is already in use", HttpStatus.NOT_FOUND);
         }
         user.setPassword(user.getPassword());
-
+        user.setDeleted(false);
         return userRepository.save(user);
     }
 
