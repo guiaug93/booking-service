@@ -20,14 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    //TODO revisar
     @Operation(
-            description = "Get Users Service",
-            responses = {
-                    @ApiResponse(responseCode = "400",ref = "badRequest"),
-                    @ApiResponse(responseCode = "500",ref = "internalServerError"),
-                    @ApiResponse(responseCode = "200",ref = "successfulResponse")
-            }
+            description = "Create Users Service"
     )
     public User createUser(@RequestBody User user) {
         return userService.create(user);
@@ -35,22 +29,26 @@ public class UserController {
 
 
     @GetMapping
+    @Operation(description = "Get All Users")
     public List<User> getAllUsers() {
         return userService.fetchAll();
     }
 
     @GetMapping("/{id}")
+    @Operation(description = "Get user by id")
     public User getUserById(@PathVariable UUID id) {
         return userService.getById(id);
     }
 
 
     @PutMapping("/{id}")
+    @Operation(description = "Update user")
     public User updateUser(@PathVariable UUID id, @RequestBody User updatedUser) {
         return userService.update(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(description = "Delete a User")
     public void deleteUser(@PathVariable UUID id) {
         userService.delete(id);
     }
