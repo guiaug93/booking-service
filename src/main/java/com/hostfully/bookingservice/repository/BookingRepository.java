@@ -16,7 +16,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "WHERE b.property.id = :propertyId " +
             "AND :endDate > b.startDate " +
             "AND :startDate < b.endDate " +
-            "AND b.status = 'BOOKED'")
+            "AND b.status = 'BOOKED'" +
+            "AND b.deleted = false")
     List<Booking> findBookingsForPropertyAtDate(@Param("propertyId") UUID propertyId,
                                                 @Param("startDate") LocalDateTime startDate,
                                                 @Param("endDate") LocalDateTime endDate);
