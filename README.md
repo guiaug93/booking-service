@@ -33,8 +33,7 @@ You can access the Swagger UI to explore the API endpoints by navigating to [htt
 
 ## API Postman Collection
 
-You can also access the postman collection by navigating to [https://api.postman.com/collections/352822-33a5c789-ca71-4b50-8ecf-c209ecd29cb5?access_key=PMAT-01HNE9SBBKFHEGXFFPA9CW8SFG](https://api.postman.com/collections/352822-33a5c789-ca71-4b50-8ecf-c209ecd29cb5?access_key=PMAT-01HNE9SBBKFHEGXFFPA9CW8SFG)
-Alternatively you can access the collection on /resources/booking_api_collection.json
+You can also access the postman collection on /resources/booking_api_collection.json
 
 
 ## H2 DATABASE
