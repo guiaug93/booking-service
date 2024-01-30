@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
@@ -28,6 +29,9 @@ public class Person {
 
     @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     public Person() { }
 
@@ -97,5 +101,17 @@ public class Person {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

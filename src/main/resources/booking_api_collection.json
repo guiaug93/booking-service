@@ -1,0 +1,753 @@
+{
+	"info": {
+		"_postman_id": "33a5c789-ca71-4b50-8ecf-c209ecd29cb5",
+		"name": "Booking Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "352822"
+	},
+	"item": [
+		{
+			"name": "owner",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"1234\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/owner",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"owner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/owner",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"owner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/owner/d8a1a515-6ca3-4f54-a2fd-57afa404403e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"owner",
+								"d8a1a515-6ca3-4f54-a2fd-57afa404403e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/owner/b46df92f-bcf5-49bb-a1d4-ba8ae596c414",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"owner",
+								"b46df92f-bcf5-49bb-a1d4-ba8ae596c414"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/owner/d8a1a515-6ca3-4f54-a2fd-57afa404403e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"owner",
+								"d8a1a515-6ca3-4f54-a2fd-57afa404403e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "guest",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"1243\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/guest",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"guest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/guest",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"guest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/guest/b3de7562-f901-4513-9445-e50d4f7f3ad7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"guest",
+								"b3de7562-f901-4513-9445-e50d4f7f3ad7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/guest/824ddacf-6be8-4021-873b-ea97c4264073",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"guest",
+								"824ddacf-6be8-4021-873b-ea97c4264073"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update ",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner5\",\n    \"document\": \"1243\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/guest/b3de7562-f901-4513-9445-e50d4f7f3ad7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"guest",
+								"b3de7562-f901-4513-9445-e50d4f7f3ad7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "property",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"owner\": {\n    \"id\": \"f9193d3a-e1de-4b1e-887c-dc3d2b770fce\"\n  },\n  \"name\": \"Beach house\",\n  \"description\": \"Beach house\",\n  \"dailyValue\": 100.00,\n  \"cleaningValue\": 50.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/property",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/property",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/property/6c2b5e39-0fbd-4b3c-b289-686688b9d5ae",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"property",
+								"6c2b5e39-0fbd-4b3c-b289-686688b9d5ae"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/property/a9642077-1110-4e2f-b997-32f835802fe7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"property",
+								"a9642077-1110-4e2f-b997-32f835802fe7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "booking",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property\": {\n    \"id\": \"2b66df9e-4cfb-48a8-94e8-e8d41f1d6bcc\"\n  },\n  \"startDate\": \"2024-01-01T10:00:00\",\n  \"endDate\": \"2024-01-05T10:00:00\",\n  \"guest\": {\n    \"id\": \"1c5aac17-d22c-4b61-a6ac-0c7821e15c2f\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rebook",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property\": {\n    \"id\": \"00f510bb-96f0-4580-a2c6-8721a99b4730\"\n  },\n  \"startDate\": \"2024-01-01T10:00:00\",\n  \"endDate\": \"2024-01-10T10:00:00\",\n  \"guest\": {\n    \"id\": \"b251748e-7092-4c6d-a740-fe236c8a0c83\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking/rebook/4949c38c-b3ff-40fe-a8c7-66c04215cb6a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking",
+								"rebook",
+								"4949c38c-b3ff-40fe-a8c7-66c04215cb6a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking/cancel/4949c38c-b3ff-40fe-a8c7-66c04215cb6a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking",
+								"cancel",
+								"4949c38c-b3ff-40fe-a8c7-66c04215cb6a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking/4949c38c-b3ff-40fe-a8c7-66c04215cb6a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking",
+								"4949c38c-b3ff-40fe-a8c7-66c04215cb6a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property\": {\n    \"id\": \"89db9fb9-4e1f-4a06-b993-fca4b17980e3\"\n  },\n  \"startDate\": \"2024-01-01T11:00:00\",\n  \"endDate\": \"2024-01-05T10:00:00\",\n  \"guest\": {\n    \"id\": \"f884a87a-7da7-481b-9d98-dddcdef1cda2\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking/2cfee620-b91d-4209-a95c-e689636e2446",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking",
+								"2cfee620-b91d-4209-a95c-e689636e2446"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking block",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property\": {\n    \"id\": \"2b66df9e-4cfb-48a8-94e8-e8d41f1d6bcc\"\n  },\n  \"startDate\": \"2024-01-01T10:00:00\",\n  \"endDate\": \"2024-01-05T10:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking-block",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking-block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking-block",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking-block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking-block/f96dadbe-034e-466d-b391-47edb6b0c881",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking-block",
+								"f96dadbe-034e-466d-b391-47edb6b0c881"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking-block/f96dadbe-034e-466d-b391-47edb6b0c881",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking-block",
+								"f96dadbe-034e-466d-b391-47edb6b0c881"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

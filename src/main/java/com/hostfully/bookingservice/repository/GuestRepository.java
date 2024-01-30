@@ -1,7 +1,6 @@
 package com.hostfully.bookingservice.repository;
 
 import com.hostfully.bookingservice.model.Guest;
-import com.hostfully.bookingservice.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

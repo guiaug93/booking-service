@@ -20,9 +20,4 @@ public class Guest extends Person{
     public Guest(UUID id, String name, String document, String telephone, String address, String mail, Boolean deleted) {
         super(id, name, document, telephone, address, mail, deleted);
     }
-
-
-    //@OneToMany(mappedBy = "guest", cascade = CascadeType.ALL)
-    //private List<Booking> bookings;
-
 }

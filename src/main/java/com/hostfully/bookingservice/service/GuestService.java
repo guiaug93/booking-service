@@ -6,6 +6,7 @@ import com.hostfully.bookingservice.repository.GuestRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,8 +22,9 @@ public class GuestService {
 
     public Guest create(Guest guest) {
         if (guestRepository.findByDocument(guest.getDocument()) != null) {
-            throw new ServiceException("There is already a guest with that document", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("There is already a guest with that document", HttpStatus.NOT_MODIFIED);
         }
+        guest.setCreatedAt(LocalDateTime.now());
         guest.setDeleted(false);
         return guestRepository.save(guest);
     }
@@ -64,6 +66,9 @@ public class GuestService {
         Optional<Guest> guest = guestRepository.findById(id);
         if (guest.isPresent()) {
             Guest deletedGuest = guest.get();
+            if(deletedGuest.isDeleted()){
+                throw new ServiceException("Guest is already deleted", HttpStatus.NOT_MODIFIED);
+            }
             deletedGuest.setDeleted(true);
             guestRepository.save(deletedGuest);
         } else {
