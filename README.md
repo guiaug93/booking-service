@@ -30,3 +30,19 @@ The project should now be running and accessible. You can access it at [http://l
 ## Swagger UI
 
 You can access the Swagger UI to explore the API endpoints by navigating to [http://localhost:8080/swagger-ui/index.html#](http://localhost:8080/swagger-ui/index.html#).
+
+## API Postman Collection
+
+You can also access the postman collection by navigating to [https://api.postman.com/collections/352822-33a5c789-ca71-4b50-8ecf-c209ecd29cb5?access_key=PMAT-01HNE9SBBKFHEGXFFPA9CW8SFG](https://api.postman.com/collections/352822-33a5c789-ca71-4b50-8ecf-c209ecd29cb5?access_key=PMAT-01HNE9SBBKFHEGXFFPA9CW8SFG)
+Alternatively you can access the collection on /resources/booking_api_collection.json
+
+
+## H2 DATABASE
+
+You can access the H2 database console by navigating to [http://localhost:8080/h2-console#](http://localhost:8080/h2-console).
+
+
+## Database Architecture
+
+This image illustrates the architecture of the database utilized by the booking-service API.
+![Database Architecture](database-arch.png)

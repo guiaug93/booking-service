@@ -33,9 +33,6 @@ public class Property {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
     private BigDecimal dailyValue;
 
     private BigDecimal cleaningValue;
@@ -47,14 +44,13 @@ public class Property {
 
     }
 
-    public Property(UUID id, Owner owner, String name, String description, BookingStatus status, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal dailyValue, BigDecimal cleaningValue, Boolean deleted) {
+    public Property(UUID id, Owner owner, String name, String description, BookingStatus status, LocalDateTime createdAt, BigDecimal dailyValue, BigDecimal cleaningValue, Boolean deleted) {
         this.id = id;
         this.owner = owner;
         this.name = name;
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.dailyValue = dailyValue;
         this.cleaningValue = cleaningValue;
         this.deleted = deleted;
@@ -82,14 +78,6 @@ public class Property {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public BigDecimal getDailyValue() {

@@ -8,6 +8,7 @@ import com.hostfully.bookingservice.repository.BookingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +35,7 @@ public class BookingService {
         checkBookingAvailability(booking);
         booking.setBookingType(bookingType);
         booking.setStatus(Booking.BookingStatus.BOOKED);
+        booking.setCreatedAt(LocalDateTime.now());
         booking.setDeleted(false);
         return bookingRepository.save(booking);
     }
@@ -62,14 +64,14 @@ public class BookingService {
 
     private void checkBlocks(Booking booking){
         if(booking.getBookingType() == Booking.BookingType.MAINTENANCE){
-            throw new ServiceException("Booking is blocked due to maintenance", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("Booking is blocked due to maintenance", HttpStatus.NOT_MODIFIED);
         }
     }
 
     private void checkDateAvailability(Booking newBooking, Booking booking){
         if (newBooking.getStartDate().isBefore(booking.getEndDate()) &&
                 newBooking.getEndDate().isAfter(booking.getStartDate())) {
-            throw new ServiceException("Range of dates not available for booking", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("Range of dates not available for booking", HttpStatus.NOT_MODIFIED);
         }
     }
 
@@ -82,6 +84,9 @@ public class BookingService {
             booking.setEndDate(updatedBooking.getEndDate());
             if(booking.getBookingType() == Booking.BookingType.GUEST_BOOKING){
                 booking.setGuest(updatedBooking.getGuest());
+            }
+            if(booking.getStatus() == Booking.BookingStatus.CANCELED){
+                throw new ServiceException("This booking is cancelled, it`s necessary to rebook!", HttpStatus.NOT_MODIFIED);
             }
 
             checkBookingAvailability(booking);
@@ -103,7 +108,6 @@ public class BookingService {
             booking.setEndDate(rebook.getEndDate());
             booking.setStatus(Booking.BookingStatus.BOOKED);
             checkBookingAvailability(booking);
-            //TODO SALVAR NO HISTORICO
             return bookingRepository.save(booking);
         } else {
             throw new ServiceException("Booking not found", HttpStatus.NOT_FOUND);
@@ -112,13 +116,13 @@ public class BookingService {
 
     private void validateBookingUpdate(Booking booking){
         if(booking.isDeleted()){
-            throw new ServiceException("Booking is deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("Booking is deleted", HttpStatus.NOT_MODIFIED);
         }
         if(booking.getStatus() != Booking.BookingStatus.CANCELED){
-            throw new ServiceException("Booking is not canceled", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("Booking is not canceled", HttpStatus.NOT_MODIFIED);
         }
         if(booking.getBookingType() != Booking.BookingType.GUEST_BOOKING){
-            throw new ServiceException("Not allowed to rebook a blocked booking, please delete it", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ServiceException("Not allowed to rebook a blocked booking, please delete it", HttpStatus.NOT_MODIFIED);
         }
     }
 
@@ -127,7 +131,6 @@ public class BookingService {
         if (existingBooking.isPresent()) {
             Booking booking = existingBooking.get();
             booking.setStatus(Booking.BookingStatus.CANCELED);
-            //TODO SALVAR NO HISTORICO
 
             bookingRepository.save(booking);
         } else {
@@ -158,7 +161,7 @@ public class BookingService {
         if (booking.isPresent()) {
             Booking deletedBooking = booking.get();
             if(deletedBooking.isDeleted()){
-                throw new ServiceException("Booking is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
+                throw new ServiceException("Booking is already deleted", HttpStatus.NOT_MODIFIED);
             }
             deletedBooking.setDeleted(true);
             bookingRepository.save(deletedBooking);
