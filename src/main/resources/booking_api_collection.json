@@ -47,7 +47,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,7 +78,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,7 +107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -201,7 +201,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -232,7 +232,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -355,7 +355,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -386,7 +386,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Owner1\",\n    \"document\": \"123\",\n    \"telephone\": \"1234\",\n    \"address\": \"address 12\",\n    \"mail\": \"test@test.com\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -436,6 +436,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"owner\": {\n        \"id\": \"ba580417-854c-40d1-a2f4-b953040f4dfe\"\n    },\n    \"name\": \"Beach House\",\n    \"description\": \"A beautiful beach house\",\n    \"status\": \"AVAILABLE\",\n    \"createdAt\": \"2024-01-31T19:35:52.508384\",\n    \"dailyValue\": 100.00,\n    \"cleaningValue\": 20.00,\n    \"deleted\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/property/31cd8367-0701-4675-8840-a5314dde109f",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"property",
+								"31cd8367-0701-4675-8840-a5314dde109f"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -449,7 +478,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"property\": {\n    \"id\": \"2b66df9e-4cfb-48a8-94e8-e8d41f1d6bcc\"\n  },\n  \"startDate\": \"2024-01-01T10:00:00\",\n  \"endDate\": \"2024-01-05T10:00:00\",\n  \"guest\": {\n    \"id\": \"1c5aac17-d22c-4b61-a6ac-0c7821e15c2f\"\n  }\n}",
+							"raw": "{\n  \"property\": {\n    \"id\": \"31cd8367-0701-4675-8840-a5314dde109f\"\n  },\n  \"startDate\": \"2024-01-01T10:00:00\",\n  \"endDate\": \"2024-01-05T10:00:00\",\n  \"guest\": {\n    \"id\": \"1c5aac17-d22c-4b61-a6ac-0c7821e15c2f\"\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -621,6 +650,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking/3a1c1e8a-4379-402c-a20c-3bedaa6297ed",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking",
+								"3a1c1e8a-4379-402c-a20c-3bedaa6297ed"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -742,6 +800,35 @@
 								"api",
 								"booking-block",
 								"f96dadbe-034e-466d-b391-47edb6b0c881"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/booking-block/10104557-4af3-4e58-8e69-fc867be2292f",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"booking-block",
+								"10104557-4af3-4e58-8e69-fc867be2292f"
 							]
 						}
 					},
