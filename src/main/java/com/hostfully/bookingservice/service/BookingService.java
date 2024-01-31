@@ -64,14 +64,14 @@ public class BookingService {
 
     private void checkBlocks(Booking booking){
         if(booking.getBookingType() == Booking.BookingType.MAINTENANCE){
-            throw new ServiceException("Booking is blocked due to maintenance", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("Booking is blocked due to maintenance", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     private void checkDateAvailability(Booking newBooking, Booking booking){
         if (newBooking.getStartDate().isBefore(booking.getEndDate()) &&
                 newBooking.getEndDate().isAfter(booking.getStartDate())) {
-            throw new ServiceException("Range of dates not available for booking", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("Range of dates not available for booking", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -86,7 +86,7 @@ public class BookingService {
                 booking.setGuest(updatedBooking.getGuest());
             }
             if(booking.getStatus() == Booking.BookingStatus.CANCELED){
-                throw new ServiceException("This booking is cancelled, it`s necessary to rebook!", HttpStatus.NOT_MODIFIED);
+                throw new ServiceException("This booking is cancelled, it`s necessary to rebook!", HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
             checkBookingAvailability(booking);
@@ -116,13 +116,13 @@ public class BookingService {
 
     private void validateBookingUpdate(Booking booking){
         if(booking.isDeleted()){
-            throw new ServiceException("Booking is deleted", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("Booking is deleted", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if(booking.getStatus() != Booking.BookingStatus.CANCELED){
-            throw new ServiceException("Booking is not canceled", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("Booking is not canceled", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if(booking.getBookingType() != Booking.BookingType.GUEST_BOOKING){
-            throw new ServiceException("Not allowed to rebook a blocked booking, please delete it", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("Not allowed to rebook a blocked booking, please delete it", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -161,7 +161,7 @@ public class BookingService {
         if (booking.isPresent()) {
             Booking deletedBooking = booking.get();
             if(deletedBooking.isDeleted()){
-                throw new ServiceException("Booking is already deleted", HttpStatus.NOT_MODIFIED);
+                throw new ServiceException("Booking is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
             }
             deletedBooking.setDeleted(true);
             bookingRepository.save(deletedBooking);

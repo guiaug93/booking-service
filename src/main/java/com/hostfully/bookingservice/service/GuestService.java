@@ -22,7 +22,7 @@ public class GuestService {
 
     public Guest create(Guest guest) {
         if (guestRepository.findByDocument(guest.getDocument()) != null) {
-            throw new ServiceException("There is already a guest with that document", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("There is already a guest with that document", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         guest.setCreatedAt(LocalDateTime.now());
         guest.setDeleted(false);
@@ -67,7 +67,7 @@ public class GuestService {
         if (guest.isPresent()) {
             Guest deletedGuest = guest.get();
             if(deletedGuest.isDeleted()){
-                throw new ServiceException("Guest is already deleted", HttpStatus.NOT_MODIFIED);
+                throw new ServiceException("Guest is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
             }
             deletedGuest.setDeleted(true);
             guestRepository.save(deletedGuest);

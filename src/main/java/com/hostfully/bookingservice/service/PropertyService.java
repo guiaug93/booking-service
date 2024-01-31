@@ -27,7 +27,7 @@ public class PropertyService {
     public Property create(Property property) {
         try {
             if (propertyRepository.findByName(property.getName()) != null) {
-                throw new ServiceException("There is already a property with that name", HttpStatus.NOT_MODIFIED);
+                throw new ServiceException("There is already a property with that name", HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
             checkOwner(property.getOwner().getId());
@@ -86,7 +86,7 @@ public class PropertyService {
         if (property.isPresent()) {
             Property deletedProperty = property.get();
             if(deletedProperty.isDeleted()){
-                throw new ServiceException("Property is already deleted", HttpStatus.NOT_MODIFIED);
+                throw new ServiceException("Property is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
             }
             deletedProperty.setDeleted(true);
             propertyRepository.save(deletedProperty);

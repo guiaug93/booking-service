@@ -24,7 +24,7 @@ public class OwnerService {
 
     public Owner create(Owner owner) {
         if (ownerRepository.findByDocument(owner.getDocument()) != null) {
-            throw new ServiceException("There is already a owner with that document", HttpStatus.NOT_MODIFIED);
+            throw new ServiceException("There is already a owner with that document", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         owner.setDeleted(false);
         owner.setCreatedAt(LocalDateTime.now());
@@ -69,7 +69,7 @@ public class OwnerService {
         if (owner.isPresent()) {
             Owner deletedOwner = owner.get();
             if(deletedOwner.isDeleted()){
-                throw new ServiceException("Owner is already deleted", HttpStatus.NOT_MODIFIED);
+                throw new ServiceException("Owner is already deleted", HttpStatus.UNPROCESSABLE_ENTITY);
             }
             deletedOwner.setDeleted(true);
 
