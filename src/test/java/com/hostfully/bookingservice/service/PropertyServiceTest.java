@@ -33,7 +33,7 @@ class PropertyServiceTest {
     }
 
     @Test
-    void testCreateProperty_Success() {
+    void testCreatePropertySuccess() {
         UUID ownerId = UUID.randomUUID();
         Owner owner = new Owner();
         owner.setId(ownerId);
@@ -64,7 +64,7 @@ class PropertyServiceTest {
     }
 
     @Test
-    void testCreateProperty_DuplicateName() {
+    void testCreatePropertyDuplicateName() {
         UUID ownerId = UUID.randomUUID();
         Owner owner = new Owner();
         owner.setId(ownerId);
@@ -81,6 +81,46 @@ class PropertyServiceTest {
 
         verify(propertyRepository, times(1)).findByName("Property 1");
         verify(ownerService, never()).getById(any(UUID.class));
+        verify(propertyRepository, never()).save(any(Property.class));
+    }
+
+    @Test
+    void testUpdateNonExistingProperty() {
+        UUID propertyId = UUID.randomUUID();
+        Property updatedProperty = new Property();
+        updatedProperty.setId(propertyId);
+
+        when(propertyRepository.findById(propertyId)).thenReturn(Optional.empty());
+
+        assertThrows(ServiceException.class, () -> propertyService.update(propertyId, updatedProperty));
+
+        verify(propertyRepository, times(1)).findById(propertyId);
+        verify(propertyRepository, never()).save(any(Property.class));
+    }
+
+    @Test
+    void testGetDeletedPropertyById() {
+        UUID propertyId = UUID.randomUUID();
+        Property deletedProperty = new Property();
+        deletedProperty.setId(propertyId);
+        deletedProperty.setDeleted(true);
+
+        when(propertyRepository.findById(propertyId)).thenReturn(Optional.of(deletedProperty));
+
+        assertThrows(ServiceException.class, () -> propertyService.getById(propertyId));
+
+        verify(propertyRepository, times(1)).findById(propertyId);
+    }
+
+    @Test
+    void testDeleteNonExistingProperty() {
+        UUID propertyId = UUID.randomUUID();
+
+        when(propertyRepository.findById(propertyId)).thenReturn(Optional.empty());
+
+        assertThrows(ServiceException.class, () -> propertyService.delete(propertyId));
+
+        verify(propertyRepository, times(1)).findById(propertyId);
         verify(propertyRepository, never()).save(any(Property.class));
     }
 

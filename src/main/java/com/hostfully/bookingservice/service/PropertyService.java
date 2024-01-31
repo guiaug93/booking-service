@@ -58,7 +58,6 @@ public class PropertyService {
             property.setDescription(updatedProperty.getDescription());
             property.setDailyValue(updatedProperty.getDailyValue());
             property.setCleaningValue(updatedProperty.getCleaningValue());
-            property.setUpdatedAt(LocalDateTime.now());
 
             return propertyRepository.save(property);
         } else {
